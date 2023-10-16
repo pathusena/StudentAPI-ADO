@@ -14,16 +14,17 @@ namespace StudentAPI_ADO.Repositories.StudentRepository
                 _connectionString = _configuration.GetSection("ConnectionStrings")["DefaultConnectionString"];
         }
 
-        public async Task<List<Student>> GetStudents(int flag)
+        public async Task<List<Student>> GetStudents(int flag, int id)
         {
             try {
                 using (var conn = new SqlConnection(_connectionString)) {
                     using (var cmd = new SqlCommand("USP_Student_GetStudents", conn)) {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("pInt_Flag", flag);
+                        cmd.Parameters.AddWithValue("pInt_Id", id);
                         conn.Open();
                         SqlDataReader reader = await cmd.ExecuteReaderAsync();
-                        return await GetStudents(reader);
+                        return GetStudents(reader);
                     }
                 }
             
@@ -33,11 +34,13 @@ namespace StudentAPI_ADO.Repositories.StudentRepository
             }
         }
 
-        public async Task<List<Student>> GetStudents(SqlDataReader reader) {
+        public List<Student> GetStudents(SqlDataReader reader) {
             List<Student> students = new List<Student>();
-            while (await reader.ReadAsync())
-            {
-                students.Add(GetStudent(reader));
+            if (reader.HasRows) {
+                while (reader.Read())
+                {
+                    students.Add(GetStudent(reader));
+                }
             }
             return students;
         }
@@ -51,6 +54,28 @@ namespace StudentAPI_ADO.Repositories.StudentRepository
                 Email = reader["Email"].ToString(),
                 Age = Convert.ToInt16(reader["Age"])
             };
+        }
+
+        public async Task<Student> SaveStudent(int flag, Student student)
+        {
+            try {
+                using (var conn = new SqlConnection(_connectionString)) {
+                    using (var cmd = new SqlCommand("USP_Student_SaveStudent", conn)) {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("pInt_Flag", flag);
+                        cmd.Parameters.AddWithValue("pStr_FirstName", student.FirstName);
+                        cmd.Parameters.AddWithValue("pStr_LastName", student.LastName);
+                        cmd.Parameters.AddWithValue("pStr_Email", student.Email);
+                        cmd.Parameters.AddWithValue("pInt_Age", student.Age);
+                        conn.Open();
+                        int newStudentId = (int)await cmd.ExecuteScalarAsync();
+                        student.Id = newStudentId;
+                        return student;
+                    }    
+                }
+            } catch {
+                throw;
+            }
         }
     }
 }

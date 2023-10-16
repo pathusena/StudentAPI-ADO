@@ -15,7 +15,42 @@ namespace StudentAPI_ADO.Controllers
 
         [HttpGet]
         public async Task<ActionResult<List<Student>>> GetStudents() { 
-            return await _studentService.GetStudents(0);
-        } 
+            return await _studentService.GetStudents(0, -1);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Student>> GetStudent(int id)
+        {
+            var students = await _studentService.GetStudents(1, id);
+            if (students != null && students.Count > 0)
+            {
+                return students[0];
+            }
+            else { 
+                return NotFound("Student Not Found!");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Student>> SaveStudent(Student student)
+        {
+            try {
+                var newStudent = await _studentService.SaveStudent(0, student);
+                if (newStudent != null)
+                {
+                    return student;
+                }
+                else
+                {
+                    return StatusCode(500, "Failed to save the student.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+
+            }
+
+        }
     }
 }

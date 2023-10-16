@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Interview Projects\\StudentAPI_ADO\\StudentAPI_ADO\\StudentAPI_ADO.csproj": {}
+    "C:\\Sample Projects\\StudentAPI_ADO\\StudentAPI_ADO\\StudentAPI_ADO.csproj": {}
   },
   "projects": {
-    "C:\\Interview Projects\\StudentAPI_ADO\\StudentAPI_ADO\\StudentAPI_ADO.csproj": {
+    "C:\\Sample Projects\\StudentAPI_ADO\\StudentAPI_ADO\\StudentAPI_ADO.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Interview Projects\\StudentAPI_ADO\\StudentAPI_ADO\\StudentAPI_ADO.csproj",
+        "projectUniqueName": "C:\\Sample Projects\\StudentAPI_ADO\\StudentAPI_ADO\\StudentAPI_ADO.csproj",
         "projectName": "StudentAPI_ADO",
-        "projectPath": "C:\\Interview Projects\\StudentAPI_ADO\\StudentAPI_ADO\\StudentAPI_ADO.csproj",
+        "projectPath": "C:\\Sample Projects\\StudentAPI_ADO\\StudentAPI_ADO\\StudentAPI_ADO.csproj",
         "packagesPath": "C:\\Users\\pathu\\.nuget\\packages\\",
-        "outputPath": "C:\\Interview Projects\\StudentAPI_ADO\\StudentAPI_ADO\\obj\\",
+        "outputPath": "C:\\Sample Projects\\StudentAPI_ADO\\StudentAPI_ADO\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pathu\\AppData\\Roaming\\NuGet\\NuGet.Config",
