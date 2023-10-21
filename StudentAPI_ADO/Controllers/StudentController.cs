@@ -50,7 +50,44 @@ namespace StudentAPI_ADO.Controllers
                 return StatusCode(500, $"Internal Server Error: {ex.Message}");
 
             }
+        }
 
+        [HttpPut]
+        public async Task<ActionResult<Student>> UpdateStudent(Student student)
+        {
+            try
+            {
+                var newStudent = await _studentService.SaveStudent(1, student);
+                if (newStudent != null)
+                {
+                    return student;
+                }
+                else
+                {
+                    return StatusCode(500, "Failed to update the student.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteStudent(int id)
+        {
+            try {
+                var success = await _studentService.DeleteStudent(0, id);
+                if (!success)
+                {
+                    return NotFound("Student not found");
+                }
+                return NoContent();
+            } catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
         }
     }
 }

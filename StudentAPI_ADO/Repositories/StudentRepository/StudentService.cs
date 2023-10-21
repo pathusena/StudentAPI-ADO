@@ -56,22 +56,45 @@ namespace StudentAPI_ADO.Repositories.StudentRepository
             };
         }
 
-        public async Task<Student> SaveStudent(int flag, Student student)
+        public async Task<Student?> SaveStudent(int flag, Student student)
         {
             try {
                 using (var conn = new SqlConnection(_connectionString)) {
                     using (var cmd = new SqlCommand("USP_Student_SaveStudent", conn)) {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("pInt_Flag", flag);
+                        cmd.Parameters.AddWithValue("pInt_Id", student.Id);
                         cmd.Parameters.AddWithValue("pStr_FirstName", student.FirstName);
                         cmd.Parameters.AddWithValue("pStr_LastName", student.LastName);
                         cmd.Parameters.AddWithValue("pStr_Email", student.Email);
                         cmd.Parameters.AddWithValue("pInt_Age", student.Age);
                         conn.Open();
-                        int newStudentId = (int)await cmd.ExecuteScalarAsync();
-                        student.Id = newStudentId;
-                        return student;
+                        var result = await cmd.ExecuteScalarAsync();
+
+                        if (result != null) { 
+                            student.Id = Convert.ToInt32(result);
+                            return student;
+                        }
+                        return null;
                     }    
+                }
+            } catch {
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteStudent(int flag, int id)
+        {
+            try {
+                using (var conn = new SqlConnection(_connectionString)) {
+                    using (var cmd = new SqlCommand("USP_Student_DeleteStudent", conn)) {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("pInt_Flag", flag);
+                        cmd.Parameters.AddWithValue("pInt_Id", id);
+                        conn.Open();
+                        int rowsAffected = await cmd.ExecuteNonQueryAsync();
+                        return rowsAffected > 0;
+                    }
                 }
             } catch {
                 throw;
